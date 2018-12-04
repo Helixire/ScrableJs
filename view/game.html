@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Scrable Game</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <p id="board">
+  </p>
+  <p id="hand">
+  </p>
+  <script>
+    $(setInterval(function() {
+      $.getJSON("game/status", function(body) {
+        $("#board").text(JSON.stringify(body));
+      });
+
+      $.getJSON("game/player", function(body) {
+        $("#hand").text(JSON.stringify(body));
+      });
+    }, 200));
+  </script>
+</body>
+
+</html>
