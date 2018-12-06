@@ -1,5 +1,7 @@
 import playerManager from "../class/PlayerManager";
 import gameManager from "../class/GameManager";
+import Board from '../class/Board.js';
+import dictionary from "../class/Dictionary.js";
 
 class GameController {
   constructor() {}
@@ -10,38 +12,6 @@ class GameController {
     });
   }
 
-  placeTiles(board, x, y, letters, direction) {
-    var ix = 0;
-    var iy = 0;
-
-    switch (direction) {
-      case 0:
-        ix = -1;
-        break;
-      case 1:
-        iy = -1;
-        break;
-      case 2:
-        ix = 1;
-        break;
-      case 3:
-        iy = 1;
-        break;
-      default:
-        break;
-    }
-    for (var i = 0; i < letters.length; ++i) {
-      while (typeof board._squares[y][x].type === "string") {
-        x += ix;
-        y += iy;
-      }
-      board._squares[y][x].type = letters[i].letter;
-      board._squares[y][x].value = letters[i].value;
-      x += ix;
-      y += iy;
-    }
-  }
-
   endturn(game) {
     game._playerTurnId += 1;
     game._playerTurnId %= game._players.length;
@@ -50,8 +20,23 @@ class GameController {
   play(req, res) {
     var p = req.player;
     var g = p.game;
+    var temporaryBoad = new Board(g._board);
 
-    this.placeTiles(g._board, parseInt(req.body.x), parseInt(req.body.y), req.body.letters.map(i => p.hand[i]), parseInt(req.body.direction));
+
+    var words = temporaryBoad.placeTiles(parseInt(req.body.x), parseInt(req.body.y), req.body.letters.map(i => p.hand[i]), parseInt(req.body.direction));
+
+    for (var word of words) {
+      console.log(word);
+      if (!dictionary.verifyWord(word)) {
+        res.send({
+          error: word + " is not a valid word"
+        });
+        return false;
+      }
+    }
+
+    g._board = temporaryBoad;
+
     req.body.letters.sort((a, b) => {
       return b - a;
     });
@@ -60,6 +45,7 @@ class GameController {
     }
     p.hand = p.hand.concat(g._bag.giveTiles(req.body.letters.length));
     this.endturn(g);
+    return true;
   }
 
   changeAll(req, res) {

@@ -1,7 +1,11 @@
-import Square from './Square.js'
+import Square from './Square.js';
 
 export default class Board {
-  constructor() {
+  constructor(obj) {
+    if (obj instanceof Board) {
+      this._squares = JSON.parse(JSON.stringify(obj._squares));
+      return;
+    }
     this._squares = [];
     for (var y = 0; y < 15; ++y) {
       this._squares.push([]);
@@ -76,8 +80,94 @@ export default class Board {
     this._squares[7][7].type = 5;
   }
 
-  processMove(move) {
+  getWordFromDirection(x, y, vertical) {
+    var ix = vertical ? 0 : -1;
+    var iy = vertical ? -1 : 0;
+    var ret = "";
 
+    while (y > -1 && x > -1 && typeof this._squares[y][x].type === 'string') {
+      x += ix;
+      y += iy;
+    }
+    ix *= -1;
+    iy *= -1;
+    x += ix;
+    y += iy;
+    while (y < 15 && x < 15 && typeof this._squares[y][x].type === 'string') {
+      ret += this._squares[y][x].type;
+      x += ix;
+      y += iy;
+    }
+    return ret;
+  }
+
+  getWordPosition(x, y) {
+    return [this.getWordFromDirection(x, y, false), this.getWordFromDirection(x, y, true)];
+  }
+
+  getWords(x, y, range, direction) {
+    var ix = 0;
+    var iy = 0;
+
+    switch (direction) {
+      case 0:
+        ix = -1;
+        break;
+      case 1:
+        iy = -1;
+        break;
+      case 2:
+        ix = 1;
+        break;
+      case 3:
+        iy = 1;
+        break;
+      default:
+        break;
+    }
+    var ret = new Set();
+    for (var i = 0; i < range; ++i) {
+      var tmp = this.getWordPosition(x + ix * i, y + iy * i);
+      for (var j = 0; j < tmp.length; ++j) {
+        if (tmp[j].length > 1)
+          ret.add(tmp[j]);
+      }
+    }
+    return ret;
+  }
+
+  placeTiles(x, y, letters, direction) {
+    var init = [x, y];
+    var ix = 0;
+    var iy = 0;
+
+    switch (direction) {
+      case 0:
+        ix = -1;
+        break;
+      case 1:
+        iy = -1;
+        break;
+      case 2:
+        ix = 1;
+        break;
+      case 3:
+        iy = 1;
+        break;
+      default:
+        break;
+    }
+    for (var i = 0; i < letters.length; ++i) {
+      while (typeof this._squares[y][x].type === "string") {
+        x += ix;
+        y += iy;
+      }
+      this._squares[y][x].type = letters[i].letter;
+      this._squares[y][x].value = letters[i].value;
+      x += ix;
+      y += iy;
+    }
+    return this.getWords(init[0], init[1], Math.abs(x - init[0]) + Math.abs(y - init[1]), direction);
   }
 
   toString() {

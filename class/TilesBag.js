@@ -1,4 +1,4 @@
-import Tile from './Tile.js'
+import Tile from './Tile.js';
 
 export default class TilesBag {
   constructor() {
@@ -9,8 +9,8 @@ export default class TilesBag {
         this._tiles.push(new Tile(String.fromCharCode('A'.charCodeAt(0) + i)));
       }
     }
-    this._tiles.push(new Tile(""));
-    this._tiles.push(new Tile(""));
+    this._tiles.push(new Tile(" "));
+    this._tiles.push(new Tile(" "));
     this.shuffle();
   }
 

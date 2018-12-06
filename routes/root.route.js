@@ -19,8 +19,9 @@ router.get("/game", (req, res) => {
 });
 
 router.post("/game/play/move", (req, res) => {
-  gameController.play(req, res);
-  statusController.player(req, res);
+  if (gameController.play(req, res)) {
+    statusController.player(req, res);
+  }
 });
 
 router.post("/game/play/change-all", (req, res) => {

@@ -1,5 +1,5 @@
-import Board from './Board.js'
-import TilesBag from './TilesBag.js'
+import Board from './Board.js';
+import TilesBag from './TilesBag.js';
 
 export default class Game {
   constructor(id) {
