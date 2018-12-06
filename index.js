@@ -49,8 +49,23 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use(function(req, res, next) {
-  if (req.path !== '/' && (!req.session.id || (req.player = playerManager.getPlayer(req.session.id)) === undefined)) {
+  req.player = playerManager.getPlayer(req.session.id);
+  if (req.path !== '/' && req.player === undefined) {
     res.redirect('/');
+    return;
+  }
+  next();
+});
+
+app.use(function(req, res, next) {
+  if (req.path.startsWith("/game/play/")) {
+    if (req.player.game._playerTurnId !== req.player.game._players.indexOf(req.player)) {
+      console.log("This is not your turn " + req.player.name);
+      res.send({
+        error: "This is not your turn"
+      });
+      return;
+    }
   }
   next();
 });

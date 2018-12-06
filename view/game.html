@@ -4,23 +4,530 @@
 <head>
   <title>Scrable Game</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <style>
+    .board {
+      display: grid;
+      justify-content: center;
+      align-content: center;
+      grid-template-columns: repeat(15, 1fr);
+    }
+
+    body {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .gui {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+    }
+
+    .hand {
+      display: inline-grid;
+      justify-content: center;
+      align-content: center;
+      grid-template-columns: repeat(7, 1fr);
+      grid-gap: 1%;
+      width: 50%;
+    }
+
+    .direction-ui {
+      display: inline-grid;
+      width: 25%;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .side {
+      background-color: #AAAAAA;
+      justify-content: center;
+      align-content: center;
+      grid-gap: 1%;
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      display: grid;
+      width: 17%;
+      height: 17%;
+      grid-template-rows: repeat(4, 1fr);
+    }
+
+    .playerTurn {
+      background-color: white;
+    }
+
+    .button {
+      width: 100%;
+      display: inline-block;
+      padding: 0.35em 1.2em;
+      border: 0.1em solid #FFFFFF;
+      margin: 0 0.3em 0.3em 0;
+      border-radius: 0.12em;
+      box-sizing: border-box;
+      text-decoration: none;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 300;
+      color: black;
+      background: white;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .button:hover {
+      color: white;
+      background-color: #AAAAAA;
+    }
+
+    @media all and (max-width:30em) {
+      .button {
+        display: block;
+        margin: 0.4em auto;
+      }
+    }
+
+    .selected {
+      filter: brightness(50%);
+    }
+
+    .square {
+      border: 1px solid #000;
+      height: 0;
+      padding-bottom: 100%;
+      text-align: center;
+    }
+
+    .empty {
+      background: #eaeaea;
+    }
+
+    .double-letter {
+      background: #9ccbdd;
+    }
+
+    .triple-letter {
+      background: #00a0d0;
+    }
+
+    .double-word {
+      background: #e89891;
+    }
+
+    .triple-word {
+      background: #e05447;
+    }
+
+    .tile {
+      background: #fadf90
+    }
+  </style>
 </head>
 
 <body>
-  <p id="board">
-  </p>
-  <p id="hand">
-  </p>
+  <div class="board">
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+  </div>
+  <p></br></br></br></br></br></p>
+  <div class="gui">
+    <div class="hand">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="direction-ui">
+      <div class="square tile">
+        <p>&#8592;</p>
+      </div>
+      <div class="square tile">
+        <p>&#8593;</p>
+      </div>
+      <div class="square tile">
+        <p>&#8594;</p>
+      </div>
+      <div class="square tile">
+        <p>&#8595;</p>
+      </div>
+    </div>
+    <div class="side">
+      <p class="playerTurn"></p>
+      <div>
+        <div class="button changeOne">Change One</div>
+        <div class="button changeAll">Change Hand</div>
+        <div class="button pass">Pass</div>
+      </div>
+    </div>
+  </div>
   <script>
-    $(setInterval(function() {
-      $.getJSON("game/status", function(body) {
-        $("#board").text(JSON.stringify(body));
+    $(function() {
+      var player;
+      var status;
+
+      function getHandle(data) {
+        if (data.hasOwnProperty('error')) {
+          alert(data.error);
+          return true;
+        }
+        return false;
+      }
+
+      function getHand(data) {
+        function handler(body) {
+          if (getHandle(body))
+            return;
+          player = body;
+          $(".hand").children().removeClass("square tile").addClass(function(index, style) {
+            if (index < body.hand.length) {
+              $(this).html("<p>" + body.hand[index].letter + " <sub> " + body.hand[index].value + "</sub></p>");
+              return "square tile";
+            }
+            $(this).html("");
+            return "";
+          });
+        }
+
+        if (data)
+          handler(data);
+        else
+          $.getJSON("game/player", handler);
+      }
+      setInterval(function() {
+        $.getJSON("game/status", function(body) {
+          if (getHandle(body))
+            return;
+          if (status && body.players.length != status.players.length) {
+            getHand();
+          }
+          $(".playerTurn").text("Player Turn : " + body.players[body.playerTurnId]);
+          status = body;
+          $(".board").children().removeClass("empty double-letter triple-letter double-word triple-word tile").addClass(function(index, style) {
+            var sq = body.board[Math.floor(index / 15)][index % 15];
+            switch (sq.type) {
+              case 0:
+                return "empty";
+              case 1:
+                $(this).html("<p>double-letter</p>");
+                return "double-letter";
+              case 2:
+                $(this).html("<p>triple-letter</p>");
+                return "triple-letter";
+              case 3:
+                $(this).html("<p>double-word</p>");
+                return "double-word";
+              case 4:
+                $(this).html("<p>triple-word</p>");
+                return "triple-word";
+              default:
+            }
+            if (typeof sq.type === 'string') {
+              $(this).html("<p>" + sq.type + " <sub> " + sq.value + "</sub></p>");
+              return "tile";
+            }
+            $(this).html("");
+            return "";
+          });
+        });
+      }, 200);
+
+      dirSelect = 0;
+      $(".direction-ui").children().eq(0).addClass("selected");
+
+      $(".direction-ui").children().click(function(obj) {
+        $(".direction-ui").children().eq(dirSelect).removeClass("selected");
+        dirSelect = $(".direction-ui").children().index(this);
+        $(this).addClass("selected");
+      });
+      getHand();
+
+      $(".changeAll").click(function(obj) {
+        $.post("game/play/change-all", function(data) {
+          if (getHandle(data))
+            return;
+          $(".hand").children().removeClass("selected");
+          selected = [];
+          getHand(data);
+        });
       });
 
-      $.getJSON("game/player", function(body) {
-        $("#hand").text(JSON.stringify(body));
+      $(".changeOne").click(function(obj) {
+        if (selected.length > 0) {
+          $.post("game/play/change-one", {
+              index: selected[0]
+            },
+            function(data) {
+              if (getHandle(data))
+                return;
+              $(".hand").children().removeClass("selected");
+              selected = [];
+              getHand(data);
+            });
+        }
       });
-    }, 200));
+
+      $(".pass").click(function(obj) {
+        $.post("game/play/pass");
+      });
+
+      selected = [];
+      $(".hand").children().click(function(obj) {
+        var index = $(".hand").children().index(this);
+        var tmp = selected.indexOf(index);
+        if (tmp !== -1) {
+          selected.splice(tmp, 1);
+        } else {
+          selected.push(index);
+        }
+        $(this).toggleClass("selected");
+      });
+
+      $(".board").children().click(function(obj) {
+        var index = $(".board").children().index(this);
+        if (selected.length > 0) {
+          $.post("game/play/move", {
+            x: index % 15,
+            y: Math.floor(index / 15),
+            letters: selected,
+            direction: dirSelect
+          }, function(data) {
+            if (getHandle(data))
+              return;
+            $(".hand").children().removeClass("selected");
+            selected = [];
+            getHand(data);
+          }, "json");
+        }
+      });
+    });
   </script>
 </body>
 

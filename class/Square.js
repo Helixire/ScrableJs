@@ -10,7 +10,7 @@ export default class Square {
   */
 
   constructor(type = 0) {
-    this._type = type;
-    this._value = 0;
+    this.type = type;
+    this.value = 0;
   }
 }

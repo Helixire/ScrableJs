@@ -18,6 +18,25 @@ router.get("/game", (req, res) => {
   gameController.get(req, res);
 });
 
+router.post("/game/play/move", (req, res) => {
+  gameController.play(req, res);
+  statusController.player(req, res);
+});
+
+router.post("/game/play/change-all", (req, res) => {
+  gameController.changeAll(req, res);
+  statusController.player(req, res);
+});
+
+router.post("/game/play/change-one", (req, res) => {
+  gameController.changeOne(req, res);
+  statusController.player(req, res);
+});
+
+router.post("/game/play/pass", (req, res) => {
+  gameController.pass(req, res);
+});
+
 router.get("/game/status", (req, res) => {
   statusController.get(req, res);
 });

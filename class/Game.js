@@ -20,9 +20,7 @@ export default class Game {
     return {
       id: this.id,
       board: this._board.toString(),
-      players: this._players.map(function(a) {
-        return a.name;
-      }),
+      players: this._players.map(a => a.name),
       playerTurnId: this._playerTurnId,
       status: this._status
     };
@@ -49,17 +47,4 @@ export default class Game {
       this._players.splice(index, 1);
     }
   }
-
-  setPlayers(playersList) {
-
-  }
-
-  play(move) {
-
-  }
-
-  nextPlayer() {
-
-  }
-
 }

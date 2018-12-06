@@ -27,4 +27,10 @@ export default class TilesBag {
   giveTiles(nbTiles) {
     return this._tiles.splice(0, nbTiles);
   }
+
+  changeTiles(tiles) {
+    this._tiles = this._tiles.concat(tiles);
+    this.shuffle();
+    return this.giveTiles(tiles.length);
+  }
 }

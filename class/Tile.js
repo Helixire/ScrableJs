@@ -28,10 +28,10 @@ export default class Tile {
       Q: 10,
       Z: 10
     };
-    this._letter = letter;
-    this._value = tileValues[letter];
-    if (this._value === undefined) {
-      this._value = 0;
+    this.letter = letter;
+    this.value = tileValues[letter];
+    if (this.value === undefined) {
+      this.value = 0;
     }
   }
 }
