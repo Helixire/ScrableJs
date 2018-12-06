@@ -24,9 +24,13 @@ class GameController {
 
 
     var words = temporaryBoad.placeTiles(parseInt(req.body.x), parseInt(req.body.y), req.body.letters.map(i => p.hand[i]), parseInt(req.body.direction));
+    if (words === false) {
+      res.send({
+        error: "No space left for your word"
+      });
+    }
 
     for (var word of words) {
-      console.log(word);
       if (!dictionary.verifyWord(word)) {
         res.send({
           error: word + " is not a valid word"

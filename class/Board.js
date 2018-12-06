@@ -158,9 +158,12 @@ export default class Board {
         break;
     }
     for (var i = 0; i < letters.length; ++i) {
-      while (typeof this._squares[y][x].type === "string") {
+      while (x > -1 && x < 15 && y > -1 && y < 15 && typeof this._squares[y][x].type === "string") {
         x += ix;
         y += iy;
+      }
+      if (x === -1 || x === 15 || y === -1 || y === 15) {
+        return false;
       }
       this._squares[y][x].type = letters[i].letter;
       this._squares[y][x].value = letters[i].value;
